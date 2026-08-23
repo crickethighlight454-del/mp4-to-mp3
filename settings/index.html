@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Settings — ToolBox</title>
+<meta name="description" content="Choose where ToolBox saves your converted files, or reset to your browser's default download location.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://mp4-to-mp3-bice.vercel.app/settings/">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ToolBox">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
+<link rel="shortcut icon" href="../favicon.ico">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="brand" href="../index.html">
+      <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+      <b>ToolBox</b>
+    </a>
+    <div class="top-actions">
+      <span class="ios-hint" id="iosHint"></span>
+      <button class="install-btn" id="installBtn">📲 Install App</button>
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">ToolBox</a> / <span>Settings</span>
+  </nav>
+
+  <section class="hero">
+    <span class="eyebrow">Settings</span>
+    <h1>Where should your files <em>save</em>?</h1>
+    <p>Pick a folder once and every ToolBox download — single files, or a full ZIP — gets written straight there, with no repeated "Save As" dialog.</p>
+  </section>
+
+  <div class="settings-card" id="folderCard">
+    <h3>Download Location</h3>
+    <p class="desc">This applies to every tool in ToolBox. Change it any time — the change takes effect on your very next download.</p>
+
+    <div class="folder-row">
+      <div class="folder-icon">📁</div>
+      <div class="folder-text">
+        <div class="label">Currently saving to</div>
+        <div class="value" id="folderValue">Checking…</div>
+      </div>
+    </div>
+
+    <div class="settings-actions">
+      <button class="btn btn-primary" id="chooseFolderBtn">Choose Folder</button>
+      <button class="btn btn-ghost" id="resetFolderBtn">Use Browser Default</button>
+    </div>
+
+    <p class="unsupported-note" id="unsupportedNote" style="display:none;margin-top:16px;">
+      Your browser doesn't support setting a custom save folder (this needs Chrome or Edge, on desktop or Android).
+      Files will download to your browser's usual Downloads location — most browsers let you turn on
+      "Ask where to save each file" in their own settings if you'd like to choose per download instead.
+    </p>
+  </div>
+
+  <section class="info">
+    <h2>How this works</h2>
+    <p style="color:var(--text-muted);line-height:1.8;font-size:15px;">
+      ToolBox uses your browser's File System Access API to remember a folder you've approved — the same
+      permission model used by desktop apps, just scoped to one folder. Nothing about your files or your
+      folder is ever sent anywhere; the handle is stored only on this device, in this browser. If you ever
+      revoke folder access from your browser's site settings, ToolBox simply falls back to a normal download
+      and you can pick a folder again here.
+    </p>
+  </section>
+
+  <footer>
+    <div>Part of <a href="../index.html">ToolBox</a> — 100% client-side, no uploads.</div>
+  </footer>
+</div>
+
+<script>window.PWA_ROOT = '../';</script>
+<script src="../assets/pwa.js"></script>
+<script src="../assets/save-location.js"></script>
+<script>
+(function () {
+  const folderValue = document.getElementById('folderValue');
+  const chooseBtn = document.getElementById('chooseFolderBtn');
+  const resetBtn = document.getElementById('resetFolderBtn');
+  const unsupportedNote = document.getElementById('unsupportedNote');
+
+  async function refresh() {
+    if (!SaveLocation.isSupported()) {
+      folderValue.textContent = 'Browser default (each file downloads normally)';
+      chooseBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
+      unsupportedNote.style.display = 'block';
+      return;
+    }
+    const name = await SaveLocation.getFolderNameQuiet();
+    folderValue.textContent = name ? name : 'Ask each time (browser default)';
+    chooseBtn.textContent = name ? 'Change Folder' : 'Choose Folder';
+  }
+
+  chooseBtn.addEventListener('click', async () => {
+    try {
+      await SaveLocation.chooseFolder();
+      await refresh();
+    } catch (e) {
+      console.warn('Folder pick cancelled or failed', e);
+    }
+  });
+
+  resetBtn.addEventListener('click', async () => {
+    await SaveLocation.clearFolder();
+    await refresh();
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>

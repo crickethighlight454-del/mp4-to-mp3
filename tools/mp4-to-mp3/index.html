@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MP4 to MP3 Converter Online Free – Batch Video to Audio Converter PWA</title>
+<meta name="description" content="Convert MP4, MOV, and WEBM video files to MP3 audio for free, online — convert many videos at once with batch conversion and download them all as one ZIP. 100% in your browser, no upload, no signup. Fast, private, installable PWA.">
+<meta name="keywords" content="mp4 to mp3 converter, video to audio converter, batch video converter, mp4 to mp3 online free, offline mp3 converter, PWA converter, bulk video converter, extract audio from video, download mp3 zip">
+<meta name="author" content="ToolBox">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolBox">
+<meta property="og:title" content="MP4 to MP3 Converter — Free Batch Video to Audio Tool">
+<meta property="og:description" content="Convert many MP4 videos to MP3 at once, right in your browser — no upload, no waiting. Download everything as a ZIP.">
+<meta property="og:url" content="https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/">
+<meta property="og:image" content="https://mp4-to-mp3-bice.vercel.app/icons/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="MP4 to MP3 Converter icon — a colorful audio equalizer">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MP4 to MP3 Converter — Free Batch Video to Audio Tool">
+<meta name="twitter:description" content="Convert videos to MP3 in bulk, 100% private, browser-based, no upload required.">
+<meta name="twitter:image" content="https://mp4-to-mp3-bice.vercel.app/icons/icon-512.png">
+
+<link rel="manifest" href="../../manifest.json">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MP4→MP3">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../../icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16.png">
+<link rel="shortcut icon" href="../../favicon.ico">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolBox", "item": "https://mp4-to-mp3-bice.vercel.app/" },
+    { "@type": "ListItem", "position": 2, "name": "MP4 to MP3 Converter", "item": "https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MP4 to MP3 Converter",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any (Web/PWA)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based batch MP4 to MP3 converter. Convert multiple video files to audio at once, entirely client-side, and download them all as a ZIP.",
+  "featureList": "Batch conversion, offline PWA, no upload, adjustable bitrate, parallel Web Worker encoding, ZIP download"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does my video get uploaded to a server?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. This tool runs entirely inside your browser, using a background Web Worker to do the audio encoding. Your video file is never uploaded to the internet." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert multiple videos at once?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Select or drag-and-drop several videos, convert them all together using parallel background workers, and download everything as one ZIP file automatically." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool work offline?",
+      "acceptedAnswer": { "@type": "Answer", "text": "After you install ToolBox as an app (or visit once over HTTPS), this page is cached by a service worker and keeps working without an internet connection." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which video formats are supported?",
+      "acceptedAnswer": { "@type": "Answer", "text": "MP4, MOV, WEBM, and any other format your browser can natively decode are supported for audio extraction." }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="brand" href="../../index.html">
+      <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+      <b>ToolBox</b>
+    </a>
+    <div class="top-actions">
+      <span class="ios-hint" id="iosHint"></span>
+      <a class="settings-btn" href="../../settings/index.html" title="Settings" aria-label="Settings">⚙️</a>
+      <button class="install-btn" id="installBtn">📲 Install App</button>
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../../index.html">ToolBox</a> / <span>MP4 to MP3 Converter</span>
+  </nav>
+
+  <section class="hero">
+    <span class="eyebrow">Batch • Private • Offline-Ready PWA</span>
+    <h1>Turn Video into <em>MP3</em> — All at Once, Every Time.</h1>
+    <p>Drop in your MP4, MOV, or WEBM videos and extract the audio right inside your browser. Nothing gets uploaded to a server, there's no wait time, and there's no limit on how many files you convert.</p>
+    <div class="trust-row">
+      <div><span class="dot v"></span> 100% Browser-Based</div>
+      <div><span class="dot p"></span> Batch + Parallel Conversion</div>
+      <div><span class="dot a"></span> Installable PWA</div>
+      <div><span class="dot c"></span> Completely Free</div>
+    </div>
+  </section>
+
+  <div class="loc-strip" id="locStrip" style="display:none;">
+    📁 Downloads save to: <b id="locStripName">Ask each time (browser default)</b>
+    <a href="../../settings/index.html">Change</a>
+  </div>
+
+  <div class="loc-banner" id="locBanner" style="display:none;">
+    <p>📁 Want every converted file to land in the same folder automatically, with no "Save As" dialog each time? Pick a download folder once.</p>
+    <button class="btn btn-primary" id="locBannerChoose">Choose Folder</button>
+    <button class="btn-text" id="locBannerDismiss">Not now</button>
+  </div>
+
+  <div class="dropzone" id="dropzone">
+    <div class="dz-icon"><span style="height:40%"></span><span style="height:80%"></span><span style="height:55%"></span><span style="height:100%"></span></div>
+    <h3>Drop videos here, or click to browse</h3>
+    <p>MP4, MOV, WEBM, MKV — as many files as you like, all at once</p>
+    <input type="file" id="fileInput" accept="video/*" multiple>
+  </div>
+
+  <div class="controls">
+    <div class="field">
+      <label>Bitrate</label>
+      <select id="bitrate">
+        <option value="128">128 kbps — Standard</option>
+        <option value="192" selected>192 kbps — Good Quality</option>
+        <option value="320">320 kbps — High Quality</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Channels</label>
+      <select id="channelMode">
+        <option value="stereo" selected>Stereo</option>
+        <option value="mono">Mono (Smaller File)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+        <input type="checkbox" id="autoZip" checked style="width:14px;height:14px;">
+        Auto ZIP when done
+      </label>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="clearAll">Clear All</button>
+    <button class="btn btn-primary" id="convertAll" disabled>Convert All</button>
+  </div>
+
+  <div class="filelist" id="fileList">
+    <div class="empty-state" id="emptyState">No files selected yet — add videos above to get started.</div>
+  </div>
+
+  <div class="controls" id="downloadAllRow" style="display:none;">
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="downloadAllSeparateBtn">⬇️ Download All (No ZIP)</button>
+    <button class="btn btn-ghost" id="downloadAllBtn">📦 Download All as ZIP</button>
+  </div>
+
+  <section class="info">
+    <h2>How It Works</h2>
+    <p style="color:var(--text-muted);line-height:1.8;font-size:15px;">
+      When you select a video, this tool decodes its audio track right inside your browser using the
+      Web Audio API, then hands the raw audio off to a background Web Worker that encodes it into MP3
+      — so the page never freezes, even on large batches. Several files are encoded in parallel across
+      multiple workers at once. The entire process happens on your own device: the file is never sent
+      over the internet, which keeps things fast and keeps your files private. To convert several videos
+      at once, just select all of them, click "Convert All," and (if Auto ZIP is checked) a single ZIP
+      with every MP3 downloads automatically when everything finishes.
+    </p>
+  </section>
+
+  <section class="info faq">
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+      <summary>Does my video get uploaded to a server?</summary>
+      <p>No. This tool runs entirely inside your browser, using a background Web Worker for encoding. Your video file is never uploaded to the internet.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I convert multiple videos at once?</summary>
+      <p>Yes — select or drag-and-drop several videos, they convert in parallel across background workers, and you can download everything as one ZIP file.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does this work offline?</summary>
+      <p>Install ToolBox as an app (or visit once over HTTPS) and this page keeps working without an internet connection.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Which formats are supported?</summary>
+      <p>MP4, MOV, WEBM, and any other format your browser is able to decode.</p>
+    </details>
+  </section>
+
+  <footer>
+    <div>Part of <a href="../../index.html">ToolBox</a> — 100% client-side, no uploads. Built with the Web Audio API, a Web Worker, and lamejs.</div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>window.PWA_ROOT = '../../';</script>
+<script src="../../assets/pwa.js"></script>
+<script src="../../assets/save-location.js"></script>
+<script>
+// ---------- Save-location status strip + first-run banner ----------
+(function () {
+  const strip = document.getElementById('locStrip');
+  const stripName = document.getElementById('locStripName');
+  const banner = document.getElementById('locBanner');
+  const bannerChoose = document.getElementById('locBannerChoose');
+  const bannerDismiss = document.getElementById('locBannerDismiss');
+  const DISMISS_KEY = 'toolbox-loc-banner-dismissed';
+
+  async function refreshStrip() {
+    if (!window.SaveLocation || !SaveLocation.isSupported()) { strip.style.display = 'none'; return; }
+    const name = await SaveLocation.getFolderNameQuiet();
+    stripName.textContent = name ? name : 'Ask each time (browser default)';
+    strip.style.display = 'flex';
+    return name;
+  }
+
+  async function maybeShowBanner() {
+    if (!window.SaveLocation || !SaveLocation.isSupported()) return;
+    if (localStorage.getItem(DISMISS_KEY)) return;
+    const name = await SaveLocation.getFolderNameQuiet();
+    if (name) return; // already set
+    banner.style.display = 'flex';
+  }
+
+  bannerChoose.addEventListener('click', async () => {
+    try {
+      await SaveLocation.chooseFolder();
+      banner.style.display = 'none';
+      await refreshStrip();
+    } catch (e) { console.warn('Folder pick cancelled or failed', e); }
+  });
+  bannerDismiss.addEventListener('click', () => {
+    localStorage.setItem(DISMISS_KEY, '1');
+    banner.style.display = 'none';
+  });
+
+  refreshStrip();
+  maybeShowBanner();
+})();
+</script>
+<script>
+// ---------- State ----------
+const state = { items: [] }; // {id, file, status, progress, blob, url}
+let idCounter = 0;
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const emptyState = document.getElementById('emptyState');
+const convertAllBtn = document.getElementById('convertAll');
+const clearAllBtn = document.getElementById('clearAll');
+const downloadAllRow = document.getElementById('downloadAllRow');
+const downloadAllBtn = document.getElementById('downloadAllBtn');
+const downloadAllSeparateBtn = document.getElementById('downloadAllSeparateBtn');
+const autoZipChk = document.getElementById('autoZip');
+const bitrateSel = document.getElementById('bitrate');
+const channelSel = document.getElementById('channelMode');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  addFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', (e) => addFiles(e.target.files));
+
+function addFiles(fileArr) {
+  Array.from(fileArr).forEach(file => {
+    if (!file.type.startsWith('video/') && !/\.(mp4|mov|mkv|webm|avi)$/i.test(file.name)) return;
+    state.items.push({ id: ++idCounter, file, status: 'wait', progress: 0, blob: null, url: null });
+  });
+  fileInput.value = '';
+  render();
+}
+
+function fmtSize(bytes) {
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+function render() {
+  fileList.innerHTML = '';
+  if (state.items.length === 0) {
+    emptyState.style.display = 'block';
+    fileList.appendChild(emptyState);
+    convertAllBtn.disabled = true;
+    downloadAllRow.style.display = 'none';
+    return;
+  }
+  emptyState.style.display = 'none';
+  convertAllBtn.disabled = false;
+
+  let anyDone = false;
+  state.items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'file-row' + (item.status === 'work' ? ' working' : item.status === 'done' ? ' done' : item.status === 'error' ? ' error' : '');
+
+    const meter = document.createElement('div');
+    meter.className = 'meter';
+    for (let i = 0; i < 5; i++) { const s = document.createElement('span'); meter.appendChild(s); }
+
+    const info = document.createElement('div');
+    info.className = 'file-info';
+    const badgeClass = { wait: 'status-wait', work: 'status-work', done: 'status-done', error: 'status-err' }[item.status];
+    const badgeText = { wait: 'Waiting', work: 'Converting…', done: 'Done', error: 'Error' }[item.status];
+    info.innerHTML = `
+      <div class="file-name">${item.file.name}</div>
+      <div class="file-sub">${fmtSize(item.file.size)} • <span class="status-badge ${badgeClass}">${badgeText}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${item.progress}%"></div></div>
+    `;
+
+    const actions = document.createElement('div');
+    actions.className = 'file-actions';
+    if (item.status === 'done' && item.blob) {
+      const btn = document.createElement('button');
+      btn.className = 'dl-link';
+      btn.style.background = 'none';
+      btn.style.border = 'none';
+      btn.style.cursor = 'pointer';
+      btn.style.font = 'inherit';
+      btn.textContent = '⬇ MP3';
+      btn.addEventListener('click', async () => {
+        const name = item.file.name.replace(/\.[^.]+$/, '') + '.mp3';
+        btn.disabled = true; btn.textContent = 'Saving…';
+        const method = await SaveLocation.saveBlob(name, item.blob);
+        btn.textContent = method === 'folder' ? 'Saved ✓' : '⬇ MP3';
+        btn.disabled = false;
+      });
+      actions.appendChild(btn);
+      anyDone = true;
+    } else if (item.status === 'work') {
+      const span = document.createElement('span');
+      span.className = 'mono';
+      span.style.fontSize = '12px';
+      span.style.color = 'var(--text-muted)';
+      span.textContent = item.progress + '%';
+      actions.appendChild(span);
+    }
+    const rm = document.createElement('button');
+    rm.className = 'remove-btn';
+    rm.textContent = '✕';
+    rm.onclick = () => { state.items = state.items.filter(i => i.id !== item.id); render(); };
+    actions.appendChild(rm);
+
+    row.appendChild(meter);
+    row.appendChild(info);
+    row.appendChild(actions);
+    fileList.appendChild(row);
+  });
+
+  downloadAllRow.style.display = anyDone ? 'flex' : 'none';
+}
+
+clearAllBtn.addEventListener('click', () => { state.items = []; render(); });
+
+// ---------- Worker pool ----------
+const POOL_SIZE = Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 3) - 1));
+const workerPool = [];
+function getWorkerPool() {
+  if (workerPool.length === 0) {
+    for (let i = 0; i < POOL_SIZE; i++) workerPool.push(new Worker('../../assets/encoder-worker.js'));
+  }
+  return workerPool;
+}
+
+function encodeWithWorker(worker, payload, onProgress) {
+  return new Promise((resolve, reject) => {
+    const id = Math.random().toString(36).slice(2);
+    function handler(e) {
+      const data = e.data;
+      if (data.id !== id) return;
+      if (data.type === 'progress') { onProgress(data.progress); }
+      else if (data.type === 'done') { worker.removeEventListener('message', handler); resolve(data.mp3); }
+      else if (data.type === 'error') { worker.removeEventListener('message', handler); reject(new Error(data.message)); }
+    }
+    worker.addEventListener('message', handler);
+    const transfer = [payload.left.buffer];
+    if (payload.right) transfer.push(payload.right.buffer);
+    worker.postMessage({ id, ...payload }, transfer);
+  });
+}
+
+// ---------- Decode + convert pipeline ----------
+async function decodeToBuffer(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const decoded = await ctx.decodeAudioData(arrayBuffer);
+  const targetRate = 44100;
+  if (decoded.sampleRate === targetRate) { ctx.close(); return decoded; }
+  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(decoded.duration * targetRate), targetRate);
+  const src = offline.createBufferSource();
+  src.buffer = decoded;
+  src.connect(offline.destination);
+  src.start(0);
+  const rendered = await offline.startRendering();
+  ctx.close();
+  return rendered;
+}
+
+function floatTo16(input) {
+  const out = new Int16Array(input.length);
+  for (let i = 0; i < input.length; i++) {
+    let s = Math.max(-1, Math.min(1, input[i]));
+    out[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+  }
+  return out;
+}
+
+async function convertItem(item, worker) {
+  item.status = 'work'; item.progress = 0; render();
+  try {
+    const bitrate = parseInt(bitrateSel.value, 10);
+    const forceMono = channelSel.value === 'mono';
+    const audioBuffer = await decodeToBuffer(item.file);
+    const channels = forceMono ? 1 : Math.min(2, audioBuffer.numberOfChannels);
+    const left = floatTo16(audioBuffer.getChannelData(0));
+    let right = null;
+    if (channels === 2 && audioBuffer.numberOfChannels > 1) right = floatTo16(audioBuffer.getChannelData(1));
+
+    const mp3Bytes = await encodeWithWorker(
+      worker,
+      { left, right, sampleRate: audioBuffer.sampleRate, channels, bitrate },
+      (p) => { item.progress = p; render(); }
+    );
+    const blob = new Blob([mp3Bytes], { type: 'audio/mp3' });
+    item.blob = blob;
+    item.url = URL.createObjectURL(blob);
+    item.status = 'done';
+    item.progress = 100;
+  } catch (err) {
+    console.error(err);
+    item.status = 'error';
+  }
+  render();
+}
+
+async function runPool(items) {
+  const pool = getWorkerPool();
+  const queue = items.slice();
+  async function runner(worker) {
+    while (queue.length) {
+      const item = queue.shift();
+      if (!item) return;
+      await convertItem(item, worker);
+    }
+  }
+  await Promise.all(pool.map(runner));
+}
+
+async function buildAndDownloadZip(items) {
+  const zip = new JSZip();
+  items.forEach(item => {
+    const name = item.file.name.replace(/\.[^.]+$/, '') + '.mp3';
+    zip.file(name, item.blob);
+  });
+  const content = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+  await SaveLocation.saveBlob('converted-audio.zip', content);
+}
+
+async function downloadAllSeparate(items) {
+  const files = items.map(item => ({
+    name: item.file.name.replace(/\.[^.]+$/, '') + '.mp3',
+    blob: item.blob
+  }));
+  await SaveLocation.saveBlobs(files);
+}
+
+convertAllBtn.addEventListener('click', async () => {
+  convertAllBtn.disabled = true;
+  const queue = state.items.filter(i => i.status === 'wait' || i.status === 'error');
+  await runPool(queue);
+  convertAllBtn.disabled = false;
+
+  const done = state.items.filter(i => i.status === 'done' && i.blob);
+  if (autoZipChk.checked && done.length > 1) {
+    downloadAllBtn.textContent = 'Building ZIP…';
+    await buildAndDownloadZip(done);
+    downloadAllBtn.textContent = '📦 Download All as ZIP';
+  }
+});
+
+downloadAllBtn.addEventListener('click', async () => {
+  const done = state.items.filter(i => i.status === 'done' && i.blob);
+  if (done.length === 0) return;
+  downloadAllBtn.disabled = true;
+  downloadAllBtn.textContent = 'Building ZIP…';
+  await buildAndDownloadZip(done);
+  downloadAllBtn.textContent = '📦 Download All as ZIP';
+  downloadAllBtn.disabled = false;
+});
+
+downloadAllSeparateBtn.addEventListener('click', async () => {
+  const done = state.items.filter(i => i.status === 'done' && i.blob);
+  if (done.length === 0) return;
+  downloadAllSeparateBtn.disabled = true;
+  downloadAllSeparateBtn.textContent = 'Saving…';
+  await downloadAllSeparate(done);
+  downloadAllSeparateBtn.textContent = '⬇️ Download All (No ZIP)';
+  downloadAllSeparateBtn.disabled = false;
+});
+
+render();
+</script>
+</body>
+</html>
