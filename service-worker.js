@@ -1,15 +1,28 @@
-const CACHE_NAME = 'mp4-to-mp3-v1';
+const CACHE_NAME = 'toolbox-cache-v3';
+
+// Core app-shell files. Listed as an array of *relative* paths so this file
+// works no matter what folder / subpath the site is deployed under.
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
+  './assets/styles.css',
+  './assets/pwa.js',
+  './assets/encoder-worker.js',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png',
+  './tools/mp4-to-mp3/index.html'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then((cache) =>
+      // Promise.allSettled means one missing/blocked file never breaks
+      // installation of the whole service worker (this was the #1 reason
+      // the app previously failed to become installable).
+      Promise.allSettled(APP_SHELL.map((url) => cache.add(url)))
+    )
   );
   self.skipWaiting();
 });
@@ -23,20 +36,36 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Cache-first for app shell, network-first (with cache fallback) for everything else (e.g. CDN libs)
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
+  const isNavigation = req.mode === 'navigate' ||
+    (req.method === 'GET' && req.headers.get('accept') && req.headers.get('accept').includes('text/html'));
+
+  if (isNavigation) {
+    // Network-first for pages, so new/updated tool pages show up immediately;
+    // falls back to cache when offline.
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, clone)).catch(() => {});
+          return res;
+        })
+        .catch(() => caches.match(req).then((cached) => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Cache-first for everything else (CSS, JS, icons, CDN libraries).
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
       return fetch(req)
         .then((res) => {
-          const resClone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            if (req.url.startsWith('http')) cache.put(req, resClone);
-          });
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, clone)).catch(() => {});
           return res;
         })
         .catch(() => cached);
