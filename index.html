@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MP4 to MP3 Converter Online Free – Video se Audio Nikalein | Batch Convert</title>
+<meta name="description" content="MP4, MOV, WEBM video files ko MP3 audio mein free online convert karein — ek saath bohat sari videos (batch conversion). 100% browser mein, koi upload nahi, koi signup nahi. Fast, private, mobile-friendly MP4 to MP3 converter PWA.">
+<meta name="keywords" content="mp4 to mp3 converter, video to audio converter, batch video converter, mp4 to mp3 online free, video se mp3 banayen, offline mp3 converter, PWA converter, video audio extractor">
+<meta name="author" content="MP4 se MP3">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://example.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="MP4 to MP3 Converter — Free Batch Video to Audio Tool">
+<meta property="og:description" content="Bohat sari MP4 videos ko ek saath MP3 mein convert karein, seedha apne browser mein — bina upload, bina intezar.">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/icons/icon-512.png">
+<meta property="og:locale" content="ur_PK">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MP4 to MP3 Converter — Free Batch Video to Audio Tool">
+<meta name="twitter:description" content="Videos ko MP3 mein badlein — bulk conversion, 100% private, browser-based.">
+<meta name="twitter:image" content="https://example.com/icons/icon-512.png">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F1214">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MP4→MP3">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+<!-- JSON-LD structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MP4 to MP3 Converter",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any (Web/PWA)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based batch MP4 to MP3 converter. Convert multiple video files to audio at once, entirely client-side.",
+  "featureList": "Batch conversion, offline PWA, no upload, adjustable bitrate, ZIP download"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Kya meri video kisi server par upload hoti hai?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nahi. Yeh tool poora aapke browser ke andar chalta hai. Video file kabhi bhi internet par upload nahi hoti, is liye aapki privacy mehfooz rehti hai." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kya main ek saath multiple videos convert kar sakta hoon?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ji haan. Aap bohat sari video files ek saath select ya drag-drop kar ke sab ko ek hi waqt mein MP3 mein convert kar sakte hain, aur akhir mein sab ko ek ZIP file mein download kar sakte hain." }
+    },
+    {
+      "@type": "Question",
+      "name": "Kya yeh tool offline kaam karta hai?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Ek dafa page load hone ke baad, yeh Progressive Web App (PWA) hai — aap ise apne phone ya computer par install kar ke bina internet ke bhi istemal kar sakte hain." }
+    },
+    {
+      "@type": "Question",
+      "name": "Konsi video formats support hoti hain?",
+      "acceptedAnswer": { "@type": "Answer", "text": "MP4, MOV, WEBM aur woh tamam formats jo aapka browser natively decode kar sakta hai, is tool mein audio extract karne ke liye support hoti hain." }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0F1214;
+    --panel:#171B1E;
+    --panel-2:#1E2327;
+    --border:#2A3034;
+    --text:#EDEEF0;
+    --text-muted:#8A9199;
+    --accent:#FF8A00;
+    --accent-soft:#FF8A0022;
+    --accent-2:#3FD0C9;
+    --danger:#FF5C5C;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #1c2226 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #1a1512 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:var(--accent-2);}
+
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:36px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{width:34px;height:34px;border-radius:9px;background:var(--panel-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:2px;padding:6px;}
+  .brand-mark span{display:block;width:3px;background:var(--accent);border-radius:2px;animation:idlebar 1.6s ease-in-out infinite;}
+  .brand-mark span:nth-child(1){height:35%;animation-delay:0s;}
+  .brand-mark span:nth-child(2){height:75%;animation-delay:.15s;}
+  .brand-mark span:nth-child(3){height:100%;animation-delay:.3s;}
+  .brand-mark span:nth-child(4){height:55%;animation-delay:.45s;}
+  @keyframes idlebar{0%,100%{transform:scaleY(.5);}50%{transform:scaleY(1);}}
+  .brand b{font-family:'Space Grotesk';font-size:16px;}
+  .install-btn{background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;display:none;}
+  .install-btn:hover{border-color:var(--accent);}
+
+  .hero{padding:8px 0 30px;border-bottom:1px solid var(--border);margin-bottom:30px;}
+  .eyebrow{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:block;}
+  .hero h1{font-size:clamp(28px,5vw,42px);line-height:1.15;font-weight:700;max-width:680px;}
+  .hero h1 em{color:var(--accent);font-style:normal;}
+  .hero p{color:var(--text-muted);font-size:16px;max-width:560px;margin-top:14px;line-height:1.6;}
+  .trust-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;}
+  .trust-row div{display:flex;align-items:center;gap:7px;color:var(--text-muted);font-size:13px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-2);}
+
+  .dropzone{
+    border:1.5px dashed var(--border);
+    border-radius:var(--radius);
+    background:var(--panel);
+    padding:44px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .2s, background .2s;
+    position:relative;
+  }
+  .dropzone.drag{border-color:var(--accent); background:var(--panel-2);}
+  .dropzone h3{font-size:18px;margin-bottom:6px;}
+  .dropzone p{color:var(--text-muted);font-size:13px;margin:4px 0 0;}
+  .dz-icon{margin:0 auto 16px;width:52px;height:52px;border-radius:12px;background:var(--panel-2);border:1px solid var(--border);display:flex;align-items:end;justify-content:center;gap:3px;padding:10px 12px;}
+  .dz-icon span{width:4px;background:var(--accent);border-radius:2px;}
+  input[type=file]{display:none;}
+
+  .controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:22px 0;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);}
+  select{
+    background:var(--panel-2);border:1px solid var(--border);color:var(--text);
+    padding:9px 12px;border-radius:9px;font-family:'JetBrains Mono';font-size:13px;
+  }
+  .btn{
+    border:none;border-radius:10px;padding:11px 20px;font-weight:600;font-size:14px;
+    cursor:pointer;font-family:'Inter';transition:transform .15s, opacity .15s;
+  }
+  .btn-primary{background:var(--accent);color:#141414;}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-primary:not(:disabled):hover{transform:translateY(-1px);}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent-2);color:var(--accent-2);}
+  .spacer{flex:1;}
+
+  .filelist{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+  .file-row{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:14px;
+  }
+  .meter{display:flex;gap:2px;align-items:end;height:24px;width:30px;flex-shrink:0;}
+  .meter span{width:3px;background:var(--border);border-radius:2px;transition:background .2s;}
+  .file-row.working .meter span{background:var(--accent);animation:meterpulse .9s ease-in-out infinite;}
+  .file-row.done .meter span{background:var(--accent-2);}
+  .meter span:nth-child(1){height:30%;animation-delay:0s;}
+  .meter span:nth-child(2){height:60%;animation-delay:.1s;}
+  .meter span:nth-child(3){height:100%;animation-delay:.2s;}
+  .meter span:nth-child(4){height:45%;animation-delay:.3s;}
+  .meter span:nth-child(5){height:75%;animation-delay:.4s;}
+  @keyframes meterpulse{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1);}}
+
+  .file-info{flex:1;min-width:0;}
+  .file-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-sub{font-size:12px;color:var(--text-muted);margin-top:3px;font-family:'JetBrains Mono';}
+  .progress-track{height:5px;background:var(--panel-2);border-radius:99px;margin-top:8px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .2s;}
+  .file-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .status-badge{font-size:11px;padding:4px 9px;border-radius:99px;font-family:'JetBrains Mono';white-space:nowrap;}
+  .status-wait{background:var(--panel-2);color:var(--text-muted);}
+  .status-work{background:#ff8a0022;color:var(--accent);}
+  .status-done{background:#3fd0c922;color:var(--accent-2);}
+  .status-err{background:#ff5c5c22;color:var(--danger);}
+  .dl-link{color:var(--accent-2);font-size:13px;text-decoration:none;font-weight:600;}
+  .remove-btn{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;line-height:1;padding:2px;}
+  .remove-btn:hover{color:var(--danger);}
+
+  .empty-state{color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;}
+
+  section.info{margin-top:60px;border-top:1px solid var(--border);padding-top:36px;}
+  section.info h2{font-size:22px;margin-bottom:16px;}
+  .faq{border-top:1px solid var(--border);}
+  .faq-item{border-bottom:1px solid var(--border);padding:16px 0;}
+  .faq-item summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+';color:var(--accent);font-size:20px;}
+  .faq-item[open] summary::after{content:'–';}
+  .faq-item p{color:var(--text-muted);font-size:14px;margin-top:10px;line-height:1.7;}
+
+  footer{margin-top:50px;color:var(--text-muted);font-size:12px;text-align:center;border-top:1px solid var(--border);padding-top:20px;}
+
+  @media (max-width:520px){
+    .file-row{flex-wrap:wrap;}
+    .file-actions{width:100%;justify-content:space-between;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+      <b>MP4 → MP3</b>
+    </div>
+    <button class="install-btn" id="installBtn">📲 App Install Karein</button>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow">Batch • Private • Offline-Ready PWA</span>
+    <h1>Video ko <em>MP3</em> Banayein — Ek Saath, Bohat Saari.</h1>
+    <p>Apni MP4, MOV ya WEBM videos yahan daalein aur seedha apne browser mein audio nikalein. Koi file server par upload nahi hoti, koi wait time nahi, koi limit nahi.</p>
+    <div class="trust-row">
+      <div><span class="dot"></span> 100% Browser-Based</div>
+      <div><span class="dot"></span> Batch Conversion</div>
+      <div><span class="dot"></span> Installable PWA</div>
+      <div><span class="dot"></span> Bilkul Free</div>
+    </div>
+  </section>
+
+  <div class="dropzone" id="dropzone">
+    <div class="dz-icon"><span style="height:40%"></span><span style="height:80%"></span><span style="height:55%"></span><span style="height:100%"></span></div>
+    <h3>Videos yahan drop karein ya click kar ke select karein</h3>
+    <p>MP4, MOV, WEBM, MKV — jitni marzi files ek saath</p>
+    <input type="file" id="fileInput" accept="video/*" multiple>
+  </div>
+
+  <div class="controls">
+    <div class="field">
+      <label>Bitrate</label>
+      <select id="bitrate">
+        <option value="128">128 kbps — Standard</option>
+        <option value="192" selected>192 kbps — Achi Quality</option>
+        <option value="320">320 kbps — High Quality</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Channels</label>
+      <select id="channelMode">
+        <option value="stereo" selected>Stereo</option>
+        <option value="mono">Mono (Chhoti File)</option>
+      </select>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="clearAll">Sab Hatayein</button>
+    <button class="btn btn-primary" id="convertAll" disabled>Sab Convert Karein</button>
+  </div>
+
+  <div class="filelist" id="fileList">
+    <div class="empty-state" id="emptyState">Abhi koi file select nahi hui — upar se videos daalein.</div>
+  </div>
+
+  <div class="controls" id="downloadAllRow" style="display:none;">
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="downloadAllBtn">📦 Sab MP3 ZIP mein Download Karein</button>
+  </div>
+
+  <section class="info">
+    <h2>Yeh Kaise Kaam Karta Hai</h2>
+    <p style="color:var(--text-muted);line-height:1.8;font-size:15px;">
+      Jab aap koi video select karte hain, yeh tool aapke browser ke andar hi (Web Audio API ke zariye) us video ki audio track ko decode karta hai,
+      phir usay MP3 format mein encode kar deta hai. Yeh poora process aapki apni device par hota hai — file kabhi internet par nahi jaati,
+      is liye aapki privacy aur bandwidth dono bachte hain. Ek saath kai videos convert karne ke liye bas sab files select karein aur
+      "Sab Convert Karein" par click karein.
+    </p>
+  </section>
+
+  <section class="info faq">
+    <h2>Aksar Poochhay Jane Wale Sawalat</h2>
+    <details class="faq-item" open>
+      <summary>Kya meri video kisi server par upload hoti hai?</summary>
+      <p>Nahi. Yeh tool poora aapke browser ke andar chalta hai. Video file kabhi bhi internet par upload nahi hoti.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Kya main ek saath multiple videos convert kar sakta hoon?</summary>
+      <p>Ji haan — bohat sari videos select ya drag-drop karein, sab ek saath convert hongi, aur ek ZIP mein download bhi ho sakti hain.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Kya yeh offline bhi kaam karta hai?</summary>
+      <p>Ek baar page load hone ke baad, yeh PWA hai — install kar ke bina internet ke bhi istemal kiya ja sakta hai.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Konsi formats support hoti hain?</summary>
+      <p>MP4, MOV, WEBM aur wo tamam formats jo aapka browser decode kar sakta hai.</p>
+    </details>
+  </section>
+
+  <footer>
+    <div>MP4 → MP3 Converter — 100% client-side, koi upload nahi. Made with Web Audio API + lamejs.</div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.0/lame.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// ---------- PWA: register service worker ----------
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
+}
+
+// ---------- Install prompt ----------
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = 'none';
+});
+
+// ---------- State ----------
+const state = { items: [] }; // {id, file, status, progress, blob, url}
+let idCounter = 0;
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const fileList = document.getElementById('fileList');
+const emptyState = document.getElementById('emptyState');
+const convertAllBtn = document.getElementById('convertAll');
+const clearAllBtn = document.getElementById('clearAll');
+const downloadAllRow = document.getElementById('downloadAllRow');
+const downloadAllBtn = document.getElementById('downloadAllBtn');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  addFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', (e) => addFiles(e.target.files));
+
+function addFiles(fileArr) {
+  Array.from(fileArr).forEach(file => {
+    if (!file.type.startsWith('video/') && !/\.(mp4|mov|mkv|webm|avi)$/i.test(file.name)) return;
+    state.items.push({ id: ++idCounter, file, status: 'wait', progress: 0, blob: null, url: null });
+  });
+  fileInput.value = '';
+  render();
+}
+
+function fmtSize(bytes) {
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(0) + ' KB';
+  return (bytes/1024/1024).toFixed(1) + ' MB';
+}
+
+function render() {
+  fileList.innerHTML = '';
+  if (state.items.length === 0) {
+    emptyState.style.display = 'block';
+    fileList.appendChild(emptyState);
+    convertAllBtn.disabled = true;
+    downloadAllRow.style.display = 'none';
+    return;
+  }
+  emptyState.style.display = 'none';
+  convertAllBtn.disabled = false;
+
+  let anyDone = false;
+  state.items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'file-row' + (item.status === 'work' ? ' working' : item.status === 'done' ? ' done' : '');
+
+    const meter = document.createElement('div');
+    meter.className = 'meter';
+    for (let i=0;i<5;i++){ const s=document.createElement('span'); meter.appendChild(s); }
+
+    const info = document.createElement('div');
+    info.className = 'file-info';
+    const badgeClass = {wait:'status-wait',work:'status-work',done:'status-done',error:'status-err'}[item.status];
+    const badgeText = {wait:'Intezar mein',work:'Convert ho raha hai…',done:'Mukammal',error:'Error'}[item.status];
+    info.innerHTML = `
+      <div class="file-name">${item.file.name}</div>
+      <div class="file-sub">${fmtSize(item.file.size)} • <span class="status-badge ${badgeClass}">${badgeText}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${item.progress}%"></div></div>
+    `;
+
+    const actions = document.createElement('div');
+    actions.className = 'file-actions';
+    if (item.status === 'done' && item.url) {
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.download = item.file.name.replace(/\.[^.]+$/, '') + '.mp3';
+      a.className = 'dl-link';
+      a.textContent = '⬇ MP3';
+      actions.appendChild(a);
+      anyDone = true;
+    } else if (item.status === 'work') {
+      const span = document.createElement('span');
+      span.className = 'mono';
+      span.style.fontSize='12px';
+      span.style.color='var(--text-muted)';
+      span.textContent = item.progress + '%';
+      actions.appendChild(span);
+    }
+    const rm = document.createElement('button');
+    rm.className = 'remove-btn';
+    rm.textContent = '✕';
+    rm.onclick = () => { state.items = state.items.filter(i => i.id !== item.id); render(); };
+    actions.appendChild(rm);
+
+    row.appendChild(meter);
+    row.appendChild(info);
+    row.appendChild(actions);
+    fileList.appendChild(row);
+  });
+
+  downloadAllRow.style.display = anyDone ? 'flex' : 'none';
+}
+
+clearAllBtn.addEventListener('click', () => { state.items = []; render(); });
+
+// ---------- Conversion pipeline ----------
+async function yieldToUI() { return new Promise(r => setTimeout(r, 0)); }
+
+async function decodeToBuffer(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const decoded = await ctx.decodeAudioData(arrayBuffer);
+  const targetRate = 44100;
+  if (decoded.sampleRate === targetRate) { ctx.close(); return decoded; }
+  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(decoded.duration * targetRate), targetRate);
+  const src = offline.createBufferSource();
+  src.buffer = decoded;
+  src.connect(offline.destination);
+  src.start(0);
+  const rendered = await offline.startRendering();
+  ctx.close();
+  return rendered;
+}
+
+function floatTo16(input) {
+  const out = new Int16Array(input.length);
+  for (let i=0;i<input.length;i++){
+    let s = Math.max(-1, Math.min(1, input[i]));
+    out[i] = s < 0 ? s*0x8000 : s*0x7FFF;
+  }
+  return out;
+}
+
+async function encodeMp3(audioBuffer, bitrate, forceMono, onProgress) {
+  const channels = forceMono ? 1 : Math.min(2, audioBuffer.numberOfChannels);
+  const sampleRate = audioBuffer.sampleRate;
+  const left16 = floatTo16(audioBuffer.getChannelData(0));
+  let right16 = null;
+  if (channels === 2 && audioBuffer.numberOfChannels > 1) {
+    right16 = floatTo16(audioBuffer.getChannelData(1));
+  }
+  const encoder = new lamejs.Mp3Encoder(channels, sampleRate, parseInt(bitrate,10));
+  const blockSize = 1152;
+  const mp3Data = [];
+  const total = left16.length;
+  for (let i=0;i<total;i+=blockSize){
+    const l = left16.subarray(i, i+blockSize);
+    let buf;
+    if (channels === 2 && right16) {
+      const r = right16.subarray(i, i+blockSize);
+      buf = encoder.encodeBuffer(l, r);
+    } else {
+      buf = encoder.encodeBuffer(l);
+    }
+    if (buf.length > 0) mp3Data.push(new Int8Array(buf));
+    if (i % (blockSize*80) === 0) {
+      onProgress(Math.min(99, Math.round((i/total)*100)));
+      await yieldToUI();
+    }
+  }
+  const end = encoder.flush();
+  if (end.length > 0) mp3Data.push(new Int8Array(end));
+  onProgress(100);
+  return new Blob(mp3Data, { type: 'audio/mp3' });
+}
+
+async function convertItem(item) {
+  item.status = 'work'; item.progress = 0; render();
+  try {
+    const bitrate = document.getElementById('bitrate').value;
+    const forceMono = document.getElementById('channelMode').value === 'mono';
+    const audioBuffer = await decodeToBuffer(item.file);
+    const blob = await encodeMp3(audioBuffer, bitrate, forceMono, (p) => { item.progress = p; render(); });
+    item.blob = blob;
+    item.url = URL.createObjectURL(blob);
+    item.status = 'done';
+    item.progress = 100;
+  } catch (err) {
+    console.error(err);
+    item.status = 'error';
+  }
+  render();
+}
+
+convertAllBtn.addEventListener('click', async () => {
+  convertAllBtn.disabled = true;
+  const queue = state.items.filter(i => i.status === 'wait' || i.status === 'error');
+  for (const item of queue) {
+    await convertItem(item);
+  }
+  convertAllBtn.disabled = false;
+});
+
+downloadAllBtn.addEventListener('click', async () => {
+  const done = state.items.filter(i => i.status === 'done' && i.blob);
+  if (done.length === 0) return;
+  downloadAllBtn.textContent = 'ZIP ban raha hai…';
+  const zip = new JSZip();
+  done.forEach(item => {
+    const name = item.file.name.replace(/\.[^.]+$/, '') + '.mp3';
+    zip.file(name, item.blob);
+  });
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'converted-audio.zip';
+  document.body.appendChild(a); a.click(); a.remove();
+  downloadAllBtn.textContent = '📦 Sab MP3 ZIP mein Download Karein';
+});
+
+render();
+</script>
+</body>
+</html>

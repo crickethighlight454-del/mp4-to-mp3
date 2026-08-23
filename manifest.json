@@ -1,0 +1,19 @@
+{
+  "name": "MP4 to MP3 Converter — Batch Video to Audio",
+  "short_name": "MP4→MP3",
+  "description": "Free browser-based batch MP4 to MP3 converter. No upload, no signup, works offline.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0F1214",
+  "theme_color": "#0F1214",
+  "lang": "ur",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "multimedia"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
