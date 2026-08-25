@@ -1,7 +1,7 @@
 {
-  "id": "./",
-  "name": "Free Online Tools — Convert, Compress, Create",
-  "short_name": "ToolBox",
+  "id": "/",
+  "name": "MP4 to MP3 Converter — Free Online Video to Audio Converter",
+  "short_name": "MP4 to MP3",
   "description": "A free, installable toolbox of browser-based utilities. Starting with a batch MP4 to MP3 converter — more tools added regularly. No uploads, no signup, works offline.",
   "start_url": "/",
   "scope": "./",
