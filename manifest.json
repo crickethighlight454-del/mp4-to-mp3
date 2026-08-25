@@ -3,7 +3,7 @@
   "name": "Free Online Tools — Convert, Compress, Create",
   "short_name": "ToolBox",
   "description": "A free, installable toolbox of browser-based utilities. Starting with a batch MP4 to MP3 converter — more tools added regularly. No uploads, no signup, works offline.",
-  "start_url": "./index.html",
+  "start_url": "/",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
@@ -23,7 +23,7 @@
       "name": "MP4 to MP3 Converter",
       "short_name": "MP4→MP3",
       "description": "Batch-convert videos to MP3, right in your browser",
-      "url": "./tools/mp4-to-mp3/index.html",
+      "url": "/tools/mp4-to-mp3/",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]

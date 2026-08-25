@@ -1,4 +1,4 @@
-const CACHE_NAME = 'toolbox-cache-v4';
+const CACHE_NAME = 'toolbox-cache-v5';
 
 // Core app-shell files. Listed as an array of *relative* paths so this file
 // works no matter what folder / subpath the site is deployed under.
