@@ -144,21 +144,45 @@
   </div>
 
   <div class="controls">
-    <div class="field">
-      <label>Bitrate</label>
-      <select id="bitrate">
-        <option value="128">128 kbps — Standard</option>
-        <option value="192" selected>192 kbps — Good Quality</option>
-        <option value="320">320 kbps — High Quality</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Channels</label>
-      <select id="channelMode">
-        <option value="stereo" selected>Stereo</option>
-        <option value="mono">Mono (Smaller File)</option>
-      </select>
-    </div>
+    <details class="advanced-settings">
+      <summary aria-label="Open advanced audio settings">⚙️ Advanced audio settings</summary>
+      <div class="advanced-grid">
+        <div class="field">
+          <label for="bitrate">Audio bitrate</label>
+          <select id="bitrate">
+            <option value="128">128 kbps — Standard</option>
+            <option value="192" selected>192 kbps — Good quality</option>
+            <option value="320">320 kbps — High quality</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sampleRate">Sample rate</label>
+          <select id="sampleRate">
+            <option value="44100" selected>44.1 kHz — CD standard</option>
+            <option value="48000">48 kHz — Pro video</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="channelMode">Channels</label>
+          <select id="channelMode">
+            <option value="stereo" selected>Stereo — Music</option>
+            <option value="mono">Mono — Lectures</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="volumeBoost">Volume boost <output id="volumeValue">100%</output></label>
+          <input id="volumeBoost" type="range" min="50" max="200" step="10" value="100">
+        </div>
+        <div class="field trim-fields">
+          <label for="startTime">Trim start (seconds)</label>
+          <input id="startTime" type="number" min="0" step="0.1" value="0" inputmode="decimal">
+        </div>
+        <div class="field trim-fields">
+          <label for="endTime">Trim end (optional)</label>
+          <input id="endTime" type="number" min="0" step="0.1" placeholder="Full length" inputmode="decimal">
+        </div>
+      </div>
+    </details>
     <div class="field">
       <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
         <input type="checkbox" id="autoZip" checked style="width:14px;height:14px;">
@@ -281,6 +305,12 @@ const downloadAllSeparateBtn = document.getElementById('downloadAllSeparateBtn')
 const autoZipChk = document.getElementById('autoZip');
 const bitrateSel = document.getElementById('bitrate');
 const channelSel = document.getElementById('channelMode');
+const sampleRateSel = document.getElementById('sampleRate');
+const volumeBoost = document.getElementById('volumeBoost');
+const volumeValue = document.getElementById('volumeValue');
+const startTime = document.getElementById('startTime');
+const endTime = document.getElementById('endTime');
+volumeBoost.addEventListener('input', () => { volumeValue.value = `${volumeBoost.value}%`; volumeValue.textContent = `${volumeBoost.value}%`; });
 
 dropzone.addEventListener('click', () => fileInput.click());
 dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
@@ -413,13 +443,19 @@ async function decodeToBuffer(file) {
   const arrayBuffer = await file.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const decoded = await ctx.decodeAudioData(arrayBuffer);
-  const targetRate = 44100;
-  if (decoded.sampleRate === targetRate) { ctx.close(); return decoded; }
-  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(decoded.duration * targetRate), targetRate);
+  const targetRate = Number(sampleRateSel.value);
+  const start = Math.max(0, Number(startTime.value) || 0);
+  const endInput = Number(endTime.value);
+  const end = Number.isFinite(endInput) && endInput > start ? Math.min(decoded.duration, endInput) : decoded.duration;
+  const duration = Math.max(0.01, end - start);
+  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(duration * targetRate), targetRate);
   const src = offline.createBufferSource();
   src.buffer = decoded;
-  src.connect(offline.destination);
-  src.start(0);
+  const gain = offline.createGain();
+  gain.gain.value = (Number(volumeBoost.value) || 100) / 100;
+  src.connect(gain);
+  gain.connect(offline.destination);
+  src.start(0, start, duration);
   const rendered = await offline.startRendering();
   ctx.close();
   return rendered;
