@@ -104,7 +104,8 @@
     </a>
     <div class="top-actions">
       <span class="ios-hint" id="iosHint"></span>
-      <a class="settings-btn" href="/settings/" title="Settings" aria-label="Settings">⚙️</a>
+      <button class="settings-btn" id="themeToggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+      <a class="settings-btn" href="/settings/" title="Settings" aria-label="Settings">Settings</a>
       <button class="install-btn" id="installBtn">📲 Install App</button>
     </div>
   </header>
@@ -145,11 +146,17 @@
 
   <div class="controls">
     <details class="advanced-settings">
-      <summary aria-label="Open advanced audio settings">⚙️ Advanced audio settings</summary>
+      <summary aria-label="Open advanced audio settings">Advanced audio settings</summary>
+      <div class="preset-row" aria-label="Quick presets">
+        <span>Quick preset:</span>
+        <button type="button" class="preset-btn" data-preset="music">Music Mode</button>
+        <button type="button" class="preset-btn" data-preset="voice">Voice / Podcast</button>
+      </div>
       <div class="advanced-grid">
         <div class="field">
           <label for="bitrate">Audio bitrate</label>
           <select id="bitrate">
+            <option value="96">96 kbps — Voice</option>
             <option value="128">128 kbps — Standard</option>
             <option value="192" selected>192 kbps — Good quality</option>
             <option value="320">320 kbps — High quality</option>
@@ -181,6 +188,12 @@
           <label for="endTime">Trim end (optional)</label>
           <input id="endTime" type="number" min="0" step="0.1" placeholder="Full length" inputmode="decimal">
         </div>
+        <div class="field"><label for="fadeIn">Fade in (seconds)</label><input id="fadeIn" type="number" min="0" max="10" step="0.5" value="0"></div>
+        <div class="field"><label for="fadeOut">Fade out (seconds)</label><input id="fadeOut" type="number" min="0" max="10" step="0.5" value="0"></div>
+        <div class="field"><label for="metaTitle">Title</label><input id="metaTitle" type="text" placeholder="Video title"></div>
+        <div class="field"><label for="metaArtist">Artist</label><input id="metaArtist" type="text" placeholder="Artist name"></div>
+        <div class="field"><label for="metaAlbum">Album</label><input id="metaAlbum" type="text" placeholder="Album name"></div>
+        <div class="field"><label for="coverArt">Cover art</label><input id="coverArt" type="file" accept="image/jpeg,image/png" style="display:block"></div>
       </div>
     </details>
     <div class="field">
@@ -310,6 +323,21 @@ const volumeBoost = document.getElementById('volumeBoost');
 const volumeValue = document.getElementById('volumeValue');
 const startTime = document.getElementById('startTime');
 const endTime = document.getElementById('endTime');
+const fadeIn = document.getElementById('fadeIn');
+const fadeOut = document.getElementById('fadeOut');
+const metaTitle = document.getElementById('metaTitle');
+const metaArtist = document.getElementById('metaArtist');
+const metaAlbum = document.getElementById('metaAlbum');
+const coverArt = document.getElementById('coverArt');
+const themeToggle = document.getElementById('themeToggle');
+if (localStorage.getItem('mp3-theme') === 'dark') document.body.classList.add('dark-theme');
+themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-theme'); localStorage.setItem('mp3-theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); });
+document.querySelectorAll('[data-preset]').forEach(button => button.addEventListener('click', () => {
+  const music = button.dataset.preset === 'music';
+  bitrateSel.value = music ? '320' : '96';
+  channelSel.value = music ? 'stereo' : 'mono';
+  sampleRateSel.value = music ? '44100' : '48000';
+}));
 volumeBoost.addEventListener('input', () => { volumeValue.value = `${volumeBoost.value}%`; volumeValue.textContent = `${volumeBoost.value}%`; });
 
 dropzone.addEventListener('click', () => fileInput.click());
@@ -366,6 +394,15 @@ function render() {
       <div class="file-sub">${fmtSize(item.file.size)} • <span class="status-badge ${badgeClass}">${badgeText}</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${item.progress}%"></div></div>
     `;
+    if (item.status === 'wait' || item.status === 'done') {
+      const waveform = document.createElement('div'); waveform.className = 'waveform'; waveform.title = 'Drag the handles to choose a trim range';
+      for (let i = 0; i < 32; i++) { const bar = document.createElement('span'); bar.style.height = `${20 + ((i * 17) % 70)}%`; waveform.appendChild(bar); }
+      const leftHandle = document.createElement('button'); leftHandle.className = 'wave-handle left'; leftHandle.setAttribute('aria-label', 'Drag trim start');
+      const rightHandle = document.createElement('button'); rightHandle.className = 'wave-handle right'; rightHandle.setAttribute('aria-label', 'Drag trim end');
+      const moveHandle = (handle, event) => { event.preventDefault(); const move = e => { const rect = waveform.getBoundingClientRect(); const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100)); handle.style.left = `${pct}%`; if (handle === leftHandle) startTime.value = (pct / 100 * (item.duration || 60)).toFixed(1); else endTime.value = (pct / 100 * (item.duration || 60)).toFixed(1); }; const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); }; window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); };
+      leftHandle.addEventListener('pointerdown', e => moveHandle(leftHandle, e)); rightHandle.addEventListener('pointerdown', e => moveHandle(rightHandle, e));
+      waveform.append(leftHandle, rightHandle); info.appendChild(waveform);
+    }
 
     const actions = document.createElement('div');
     actions.className = 'file-actions';
@@ -455,6 +492,8 @@ async function decodeToBuffer(file) {
   const arrayBuffer = await file.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const decoded = await ctx.decodeAudioData(arrayBuffer);
+  const currentItem = state.items.find(item => item.file === file);
+  if (currentItem) currentItem.duration = decoded.duration;
   const targetRate = Number(sampleRateSel.value);
   const start = Math.max(0, Number(startTime.value) || 0);
   const endInput = Number(endTime.value);
@@ -464,7 +503,12 @@ async function decodeToBuffer(file) {
   const src = offline.createBufferSource();
   src.buffer = decoded;
   const gain = offline.createGain();
-  gain.gain.value = (Number(volumeBoost.value) || 100) / 100;
+  const gainAmount = (Number(volumeBoost.value) || 100) / 100;
+  const fadeStart = Math.min(duration, Math.max(0, Number(fadeIn.value) || 0));
+  const fadeEnd = Math.min(duration, Math.max(0, Number(fadeOut.value) || 0));
+  gain.gain.setValueAtTime(fadeStart ? 0 : gainAmount, 0);
+  if (fadeStart) gain.gain.linearRampToValueAtTime(gainAmount, fadeStart);
+  if (fadeEnd) { gain.gain.setValueAtTime(gainAmount, Math.max(fadeStart, duration - fadeEnd)); gain.gain.linearRampToValueAtTime(0, duration); }
   src.connect(gain);
   gain.connect(offline.destination);
   src.start(0, start, duration);

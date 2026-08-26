@@ -122,6 +122,13 @@ input[type=file]{display:none;}
 .advanced-grid input[type=number]{width:100%;background:#fff;border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:9px;font-family:'JetBrains Mono';font-size:13px;box-sizing:border-box;}
 .advanced-grid input[type=range]{width:100%;accent-color:var(--violet);}
 .advanced-grid output{font-family:'JetBrains Mono';color:var(--violet);}
+.preset-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;color:var(--text-muted);font-size:12px;}
+.preset-btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:999px;padding:6px 10px;cursor:pointer;font-size:12px;}
+.preset-btn:hover{border-color:var(--violet);color:var(--violet);}
+.waveform{height:42px;display:flex;align-items:center;gap:2px;margin-top:10px;padding:4px 18px;position:relative;background:var(--panel-2);border-radius:8px;overflow:hidden;touch-action:none;}
+.waveform span{flex:1;min-width:2px;background:var(--violet);opacity:.65;border-radius:2px;}
+.wave-handle{position:absolute;top:0;bottom:0;width:10px;border:0;background:var(--pink);cursor:ew-resize;padding:0;z-index:2;}
+.wave-handle.left{left:0}.wave-handle.right{right:0}
 select{
   background:#fff;border:1px solid var(--border);color:var(--text);
   padding:9px 12px;border-radius:9px;font-family:'JetBrains Mono';font-size:13px;
@@ -194,6 +201,11 @@ footer{margin-top:50px;color:var(--text-muted);font-size:12px;text-align:center;
 footer a{color:var(--text-muted);}
 footer a:hover{color:var(--violet);}
 
+.dark-theme{--bg:#11131A;--panel:#1A1D27;--panel-2:#232735;--border:#34394A;--text:#F4F5F7;--text-muted:#A4AABD;}
+body.dark-theme{background:var(--bg);}
+.dark-theme .brand-mark,.dark-theme .dropzone,.dark-theme .trust-row div,.dark-theme .file-row,.dark-theme .btn-ghost,.dark-theme .settings-btn,.dark-theme .advanced-grid input[type=number],.dark-theme select,.dark-theme .settings-card{background:var(--panel);color:var(--text);}
+.dark-theme .loc-banner{background:var(--panel-2);border-color:var(--border);}
+.dark-theme .status-wait{background:var(--panel-2);}
 @media (max-width:520px){
   .file-row{flex-wrap:wrap;}
   .file-actions{width:100%;justify-content:space-between;}
