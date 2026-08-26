@@ -396,11 +396,12 @@ function render() {
     const info = document.createElement('div');
     info.className = 'file-info';
     const badgeClass = { wait: 'status-wait', work: 'status-work', done: 'status-done', error: 'status-err' }[item.status];
-    const badgeText = { wait: 'Waiting', work: 'Converting…', done: 'Done', error: 'Error' }[item.status];
+    const badgeText = { wait: 'Waiting', work: 'Converting…', done: 'Done', error: 'Error' }[item.status] || 'Waiting';
     info.innerHTML = `
       <div class="file-name">${item.file.name}</div>
       <div class="file-sub">${fmtSize(item.file.size)} • <span class="status-badge ${badgeClass}">${badgeText}</span></div>
       <div class="progress-track"><div class="progress-fill" style="width:${item.progress}%"></div></div>
+      ${item.status === 'error' ? `<div class="conversion-error" role="alert">${item.error || 'Conversion failed. Please try again.'}</div>` : ''}
     `;
     if (item.status === 'wait' || item.status === 'done') {
       const waveform = document.createElement('div'); waveform.className = 'waveform'; waveform.title = 'Drag the handles to choose a trim range';
@@ -466,7 +467,13 @@ function render() {
   downloadAllRow.style.display = anyDone ? 'flex' : 'none';
 }
 
-clearAllBtn.addEventListener('click', () => { state.items = []; render(); });
+clearAllBtn.addEventListener('click', () => {
+  state.items.forEach(item => { if (item.url) URL.revokeObjectURL(item.url); });
+  state.items = [];
+  speedMetric.textContent = '—';
+  savedMetric.textContent = '0 B';
+  render();
+});
 
 // ---------- Worker pool ----------
 const POOL_SIZE = Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 3) - 1));
@@ -481,14 +488,19 @@ function getWorkerPool() {
 function encodeWithWorker(worker, payload, onProgress) {
   return new Promise((resolve, reject) => {
     const id = Math.random().toString(36).slice(2);
+    let timer;
+    const cleanup = () => { worker.removeEventListener('message', handler); worker.removeEventListener('error', failed); clearTimeout(timer); };
+    function failed() { cleanup(); reject(new Error('The audio encoder could not start. Please try this video again.')); }
     function handler(e) {
       const data = e.data;
       if (data.id !== id) return;
       if (data.type === 'progress') { onProgress(data.progress); }
-      else if (data.type === 'done') { worker.removeEventListener('message', handler); resolve(data.mp3); }
-      else if (data.type === 'error') { worker.removeEventListener('message', handler); reject(new Error(data.message)); }
+      else if (data.type === 'done') { cleanup(); resolve(data.mp3); }
+      else if (data.type === 'error') { cleanup(); reject(new Error(data.message)); }
     }
     worker.addEventListener('message', handler);
+    worker.addEventListener('error', failed);
+    timer = setTimeout(() => { cleanup(); reject(new Error('Conversion timed out. Try a shorter or supported video file.')); }, 120000);
     const transfer = [payload.left.buffer];
     if (payload.right) transfer.push(payload.right.buffer);
     worker.postMessage({ id, ...payload }, transfer);
@@ -499,7 +511,10 @@ function encodeWithWorker(worker, payload, onProgress) {
 async function decodeToBuffer(file) {
   const arrayBuffer = await file.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const decoded = await ctx.decodeAudioData(arrayBuffer);
+  const decoded = await Promise.race([
+    ctx.decodeAudioData(arrayBuffer),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('This video could not be decoded by the browser. Try MP4, MOV, or WEBM.')), 60000))
+  ]);
   const currentItem = state.items.find(item => item.file === file);
   if (currentItem) currentItem.duration = decoded.duration;
   const targetRate = Number(sampleRateSel.value);
@@ -576,6 +591,7 @@ async function convertItem(item, worker) {
     item.progress = 100;
   } catch (err) {
     console.error(err);
+    item.error = err instanceof Error ? err.message : 'Conversion failed. Please try again.';
     item.status = 'error';
   }
   render();
