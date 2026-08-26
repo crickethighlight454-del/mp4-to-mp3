@@ -146,6 +146,8 @@ select{
 .btn-ghost:disabled{opacity:.4;cursor:not-allowed;}
 .spacer{flex:1;}
 
+.metrics{display:flex;gap:20px;flex-wrap:wrap;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text-muted);font:12px 'JetBrains Mono';}
+.metrics b{color:var(--violet);font-weight:700;}
 .filelist{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
 .file-row{
   background:#fff;border:1px solid var(--border);border-radius:14px;
