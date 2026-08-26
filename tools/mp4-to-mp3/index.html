@@ -385,6 +385,14 @@ function render() {
         btn.disabled = false;
       });
       actions.appendChild(btn);
+
+      const preview = document.createElement('audio');
+      preview.className = 'audio-preview';
+      preview.controls = true;
+      preview.preload = 'metadata';
+      preview.src = item.url;
+      preview.setAttribute('aria-label', `Preview converted audio for ${item.file.name}`);
+      info.appendChild(preview);
       anyDone = true;
     } else if (item.status === 'work') {
       const span = document.createElement('span');
@@ -397,7 +405,11 @@ function render() {
     const rm = document.createElement('button');
     rm.className = 'remove-btn';
     rm.textContent = '✕';
-    rm.onclick = () => { state.items = state.items.filter(i => i.id !== item.id); render(); };
+    rm.onclick = () => {
+      if (item.url) URL.revokeObjectURL(item.url);
+      state.items = state.items.filter(i => i.id !== item.id);
+      render();
+    };
     actions.appendChild(rm);
 
     row.appendChild(meter);

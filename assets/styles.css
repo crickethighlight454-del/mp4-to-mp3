@@ -164,6 +164,7 @@ select{
 .progress-track{height:6px;background:var(--panel-2);border-radius:99px;margin-top:8px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--grad);width:0%;transition:width .2s;}
 .file-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.audio-preview{display:block;width:min(100%,420px);height:36px;margin-top:12px;accent-color:var(--violet);}
 .status-badge{font-size:11px;padding:4px 10px;border-radius:99px;font-family:'JetBrains Mono';white-space:nowrap;font-weight:600;}
 .status-wait{background:var(--panel-2);color:var(--text-muted);}
 .status-work{background:#F3E8FF;color:var(--violet);}
