@@ -6,12 +6,12 @@
 <title>MP4 to MP3 Converter Online Free – Batch Video to Audio Converter PWA</title>
 <meta name="description" content="Convert MP4, MOV, and WEBM video files to MP3 audio for free, online — convert many videos at once with batch conversion and download them all as one ZIP. 100% in your browser, no upload, no signup. Fast, private, installable PWA.">
 <meta name="keywords" content="mp4 to mp3 converter, video to audio converter, batch video converter, mp4 to mp3 online free, offline mp3 converter, PWA converter, bulk video converter, extract audio from video, download mp3 zip">
-<meta name="author" content="ToolBox">
+<meta name="author" content="MP4 to MP3 Converter">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="ToolBox">
+<meta property="og:site_name" content="MP4 to MP3 Converter">
 <meta property="og:title" content="MP4 to MP3 Converter — Free Batch Video to Audio Tool">
 <meta property="og:description" content="Convert many MP4 videos to MP3 at once, right in your browser — no upload, no waiting. Download everything as a ZIP.">
 <meta property="og:url" content="https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/">
@@ -43,7 +43,7 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "ToolBox", "item": "https://mp4-to-mp3-bice.vercel.app/" },
+    { "@type": "ListItem", "position": 1, "name": "MP4 to MP3 Converter", "item": "https://mp4-to-mp3-bice.vercel.app/" },
     { "@type": "ListItem", "position": 2, "name": "MP4 to MP3 Converter", "item": "https://mp4-to-mp3-bice.vercel.app/tools/mp4-to-mp3/" }
   ]
 }
@@ -78,7 +78,7 @@
     {
       "@type": "Question",
       "name": "Does this tool work offline?",
-      "acceptedAnswer": { "@type": "Answer", "text": "After you install ToolBox as an app (or visit once over HTTPS), this page is cached by a service worker and keeps working without an internet connection." }
+      "acceptedAnswer": { "@type": "Answer", "text": "After you install MP4 to MP3 Converter as an app (or visit once over HTTPS), this page is cached by a service worker and keeps working without an internet connection." }
     },
     {
       "@type": "Question",
@@ -100,7 +100,7 @@
   <header class="top">
     <a class="brand" href="/">
       <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
-      <b>ToolBox</b>
+      <b>MP4 to MP3</b>
     </a>
     <div class="top-actions">
       <span class="ios-hint" id="iosHint"></span>
@@ -110,7 +110,7 @@
   </header>
 
   <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/">ToolBox</a> / <span>MP4 to MP3 Converter</span>
+    <a href="/">MP4 to MP3 Converter</a> / <span>MP4 to MP3 Converter</span>
   </nav>
 
   <section class="hero">
@@ -144,21 +144,45 @@
   </div>
 
   <div class="controls">
-    <div class="field">
-      <label>Bitrate</label>
-      <select id="bitrate">
-        <option value="128">128 kbps — Standard</option>
-        <option value="192" selected>192 kbps — Good Quality</option>
-        <option value="320">320 kbps — High Quality</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Channels</label>
-      <select id="channelMode">
-        <option value="stereo" selected>Stereo</option>
-        <option value="mono">Mono (Smaller File)</option>
-      </select>
-    </div>
+    <details class="advanced-settings">
+      <summary aria-label="Open advanced audio settings">⚙️ Advanced audio settings</summary>
+      <div class="advanced-grid">
+        <div class="field">
+          <label for="bitrate">Audio bitrate</label>
+          <select id="bitrate">
+            <option value="128">128 kbps — Standard</option>
+            <option value="192" selected>192 kbps — Good quality</option>
+            <option value="320">320 kbps — High quality</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sampleRate">Sample rate</label>
+          <select id="sampleRate">
+            <option value="44100" selected>44.1 kHz — CD standard</option>
+            <option value="48000">48 kHz — Pro video</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="channelMode">Channels</label>
+          <select id="channelMode">
+            <option value="stereo" selected>Stereo — Music</option>
+            <option value="mono">Mono — Lectures</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="volumeBoost">Volume boost <output id="volumeValue">100%</output></label>
+          <input id="volumeBoost" type="range" min="50" max="200" step="10" value="100">
+        </div>
+        <div class="field trim-fields">
+          <label for="startTime">Trim start (seconds)</label>
+          <input id="startTime" type="number" min="0" step="0.1" value="0" inputmode="decimal">
+        </div>
+        <div class="field trim-fields">
+          <label for="endTime">Trim end (optional)</label>
+          <input id="endTime" type="number" min="0" step="0.1" placeholder="Full length" inputmode="decimal">
+        </div>
+      </div>
+    </details>
     <div class="field">
       <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
         <input type="checkbox" id="autoZip" checked style="width:14px;height:14px;">
@@ -205,7 +229,7 @@
     </details>
     <details class="faq-item">
       <summary>Does this work offline?</summary>
-      <p>Install ToolBox as an app (or visit once over HTTPS) and this page keeps working without an internet connection.</p>
+      <p>Install MP4 to MP3 Converter as an app (or visit once over HTTPS) and this page keeps working without an internet connection.</p>
     </details>
     <details class="faq-item">
       <summary>Which formats are supported?</summary>
@@ -214,7 +238,7 @@
   </section>
 
   <footer>
-    <div>Part of <a href="/">ToolBox</a> — 100% client-side, no uploads. Built with the Web Audio API, a Web Worker, and lamejs.</div>
+    <div>Part of <a href="/">MP4 to MP3 Converter</a> — 100% client-side, no uploads. Built with the Web Audio API, a Web Worker, and lamejs.</div>
   </footer>
 </div>
 
@@ -281,6 +305,12 @@ const downloadAllSeparateBtn = document.getElementById('downloadAllSeparateBtn')
 const autoZipChk = document.getElementById('autoZip');
 const bitrateSel = document.getElementById('bitrate');
 const channelSel = document.getElementById('channelMode');
+const sampleRateSel = document.getElementById('sampleRate');
+const volumeBoost = document.getElementById('volumeBoost');
+const volumeValue = document.getElementById('volumeValue');
+const startTime = document.getElementById('startTime');
+const endTime = document.getElementById('endTime');
+volumeBoost.addEventListener('input', () => { volumeValue.value = `${volumeBoost.value}%`; volumeValue.textContent = `${volumeBoost.value}%`; });
 
 dropzone.addEventListener('click', () => fileInput.click());
 dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
@@ -413,13 +443,19 @@ async function decodeToBuffer(file) {
   const arrayBuffer = await file.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const decoded = await ctx.decodeAudioData(arrayBuffer);
-  const targetRate = 44100;
-  if (decoded.sampleRate === targetRate) { ctx.close(); return decoded; }
-  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(decoded.duration * targetRate), targetRate);
+  const targetRate = Number(sampleRateSel.value);
+  const start = Math.max(0, Number(startTime.value) || 0);
+  const endInput = Number(endTime.value);
+  const end = Number.isFinite(endInput) && endInput > start ? Math.min(decoded.duration, endInput) : decoded.duration;
+  const duration = Math.max(0.01, end - start);
+  const offline = new OfflineAudioContext(decoded.numberOfChannels, Math.ceil(duration * targetRate), targetRate);
   const src = offline.createBufferSource();
   src.buffer = decoded;
-  src.connect(offline.destination);
-  src.start(0);
+  const gain = offline.createGain();
+  gain.gain.value = (Number(volumeBoost.value) || 100) / 100;
+  src.connect(gain);
+  gain.connect(offline.destination);
+  src.start(0, start, duration);
   const rendered = await offline.startRendering();
   ctx.close();
   return rendered;
